@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Sign Up Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Signup form</h2>
+  <form class="form-horizontal" action="www.google.com">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Email:</label>
+      <div class="col-sm-6">
+        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="name">Name:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="username">Username:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="userName" placeholder="Enter UserName" name="username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Password:</label>
+      <div class="col-sm-6">          
+        <input type="password" class="form-control" id="password" placeholder="Enter password" name="pwd">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="phone">Phone-no:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="contactNumber" placeholder="Enter Phone-no" name="phone">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="dob">DOB:</label>
+      <div class="col-sm-6"> 
+         <input type="date" name="dob" id="dateOfBirth">         
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="gender">Gender:</label>
+      <div class="col-sm-6">          
+        <input type="radio" name="gender" value="male" checked> Male<br>
+        <input type="radio" name="gender" value="female"> Female<br>
+        <input type="radio" name="gender" value="other"> Other
+      </div>
+    </div>
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="city">City:</label>
+      <div class="col-sm-10">          
+          <select name="city" id="city">
+            <option value="Delhi">Delhi</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Bengal">Bengal</option>
+            <option value="Jammu">Jammu</option>
+         </select>
+      </div>
+    </div>
+
+    
+    <div class=" offset-lg-1   col-lg-8">
+        <div class="form-group col-lg-5">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="button" class="btn btn-primary" id="submitBtn" style="float:right;" onclick="window.location.href = 'userInfo.html';">Submit</button>
+          </div>
+        </div>
+        <div class="form-group col-lg-5">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="button" class="btn btn-primary" onclick="location.href='login.html'" id="loginBtn">Login</button>
+          </div>
+        </div>
+    </div>
+    <div class="result">
+       <p id="data"></p>
+    </div>
+  </form>
+</div>
+<script>
+  $(document).ready(function(){
+       $("#submitBtn").click(function(){
+
+      var name = $("#name").val();
+      var email = $("#email").val();
+      var userName = $("#userName").val();
+      var password = $("#password").val();
+      var contactNumber = $("#contactNumber").val();
+      var gender  = $("input[name='gender']:checked").val();
+      var dateOfBirth = $("#dateOfBirth").val();
+      var city = $("#city").children("option:selected").val();
+
+
+    console.log(name,email,userName,password,contactNumber,dateOfBirth,gender,city);
+
+
+var arr = { name: name,
+               email: email ,  userName: userName ,  contactNumber: contactNumber ,  city: city ,  gender: gender ,  password: password ,
+               dateOfBirth: dateOfBirth };
+$.ajax({
+    url: 'http://localhost:8089/example/users/create',
+    type: 'POST',
+    data: JSON.stringify(arr),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success: function(msg) {
+
+      if(msg.success===true){
+        //window.location.replace("file:///Users/nc8879/Desktop/shorya/login.html");
+        location.href="login.html";
+      }
+      else{
+        alert(msg.errorMessage);
+      }
+      }
+});
+     });
+ 
+    });
+ 
+
+</script>
+</body>
+</html>

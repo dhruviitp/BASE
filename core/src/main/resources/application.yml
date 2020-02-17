@@ -1,0 +1,24 @@
+server:
+  port: 8089
+  servlet:
+    context-path: /example
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+persistence:
+  user: root
+  password: 1234abcd@#
+  databaseName: Users
+  serverName: z
+  portNumber: 3306
+  maximumPoolSize: 10
+  idleConnectionTimeout: 60000
+  minimumIdleConnection: 30
+  maxLifeTime: 21600000
+  connectionTimeout: 500000
+  jdbcUrl: "jdbc:mysql://localhost:3306/Users"

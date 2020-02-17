@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Payment Gateway</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2 align="center">Payment Gateway</h2>
+  <br>
+</div>
+</body>
+<br>
+<br>
+<br>
+  <form  class="form-horizontal" action="www.google.com">
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="username">Amount to pay:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="amount" placeholder="Amount in Rupees" name="username"  readonly>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="name">Name:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="name" placeholder="Name" name="name" readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Email:</label>
+      <div class="col-sm-6">
+        <input type="email" class="form-control" id="email" placeholder="Email ID" name="email" readonly>
+      </div>
+    </div>
+
+  
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="phone">Phone-no:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="contactNumber" placeholder="Phone-no" name="phone" readonly>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+      <label class="control-label col-sm-2" for="dob">DOB:</label>
+      <div class="col-sm-6"> 
+         <input type="text" name="dob" id="dateOfBirth">         
+      </div>
+    </div> -->
+
+    <!-- <div class="form-group">
+      <label class="control-label col-sm-2" for="dob">DOB:</label>
+      <div class="col-sm-6"> 
+         <input type="date" name="dob" id="dateOfBirth">         
+      </div>
+    </div> -->
+
+    
+    <br>
+    <br>
+    <br>
+    <br>
+                
+          <div style="text-align: center">
+
+            <button type="button" class="btn btn-primary" id="updateBtn" onclick="window.location.href = 'checkin.html';"> Pay Amount</button>
+          </div>
+    <div class="result">
+       <p id="data"></p>
+    </div>
+ 
+  </form>
+<script>
+  $(document).ready(function(){
+
+    var userName  = localStorage.getItem("userName");
+
+$.get("http://localhost:8089/example/users/get?userName="+userName, function(data, status){
+         if(data.success===true){
+          console.log(data.data.name);
+          document.getElementById('name').value=data.data.name;
+          document.getElementById('amount').value=data.data.amount;
+          document.getElementById('email').value=data.data.email;
+          document.getElementById('contactNumber').value=data.data.contactNumber;
+         }
+         else{
+          alert(data.errorMessage)
+         }
+       });
+   
+   $("#updateBtn").click(function(){
+
+ var name = $("#name").val();
+      var amount = $("#email").val();
+      var email = $("#userName").val();
+      var contactNumber = $("#password").val();
+
+
+
+var arr = { name: name,
+               email: email ,  userName: userName ,  contactNumber: contactNumber
+                };
+$.ajax({
+    url: 'http://localhost:8089/example/users/update',
+    type: 'POST',
+    data: JSON.stringify(arr),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success: function(msg) {
+
+      if(msg.success===true){
+        //window.location.replace("file:///Users/nc8879/Desktop/shorya/login.html");
+        alert("Data Update Successfully");
+      }
+      else{
+        alert(msg.errorMessage);
+      }
+      }
+});
+
+
+     });
+
+   $("#deactivateBtn").click(function(){
+     var name = $("#userName").val();
+
+       $.get("http://localhost:8089/example/users/delete?userName="+name, function(data, status){
+         if(data.success===true){
+          alert("Your profile has been Deactivated Successfully");
+            location.href="file:///Users/nc8879/Desktop/shorya/login.html";
+         }
+         else{
+          alert(data.errorMessage)
+         }
+       });
+     });
+
+
+
+
+
+    });
+ 
+
+</script>
+</body>
+</html>

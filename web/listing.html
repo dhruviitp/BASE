@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Flight Listing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2 align="center">Your Flight Search</h2>
+  <br>
+</div>
+</body>
+<br>
+<br>
+<br>
+  <form  class="form-horizontal" action="www.google.com">
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="flight_no">Flight Number:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="flight_no" placeholder="Flight Number" name="username"  readonly>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="source">Source:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="source" placeholder="Source" name="username"  readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="start">Start Time:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="start" placeholder="Start Time" name="username"  readonly>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="control-label col-sm-2" for="destination">Destination:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="destination" placeholder="Destination" name="username"  readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="end">End Time:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="end" placeholder="End Time" name="username"  readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="price">Price:</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="price" placeholder="Amount in Rupees" name="username"  readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="connect">Connecting Flight Available</label>
+      <div class="col-sm-6">          
+        <input type="text" class="form-control" id="connect" placeholder="Yes/No" name="username"  readonly>
+      </div>
+    </div>
+
+
+
+
+    <!-- <div class="form-group">
+      <label class="control-label col-sm-2" for="dob">DOB:</label>
+      <div class="col-sm-6"> 
+         <input type="text" name="dob" id="dateOfBirth">         
+      </div>
+    </div> -->
+
+    <!-- <div class="form-group">
+      <label class="control-label col-sm-2" for="dob">DOB:</label>
+      <div class="col-sm-6"> 
+         <input type="date" name="dob" id="dateOfBirth">         
+      </div>
+    </div> -->
+
+     
+
+    
+    <br>
+    <br>
+    <br>
+    <br>
+                
+          <div style="text-align: center">
+
+            <button type="button" class="btn btn-primary" id="updateBtn"  onclick="window.location.href = 'payment.html';">Book</button>
+          </div>
+    <div class="result">
+       <p id="data"></p>
+    </div>
+ 
+  </form>
+<script>
+  $(document).ready(function(){
+
+    var userName  = localStorage.getItem("userName");
+
+$.get("http://localhost:8089/example/users/get?userName="+userName, function(data, status){
+         if(data.success===true){
+          console.log(data.data.name);
+          document.getElementById('flight_no').value=data.data.flight_no;
+          document.getElementById('source').value=data.data.source;
+          document.getElementById('start').value=data.data.start;
+          document.getElementById('destination').value=data.data.destination;
+          document.getElementById('end').value=data.data.end;
+          document.getElementById('price').value=data.data.price;
+          document.getElementById('connect').value=data.data.connect;
+         }
+         else{
+          alert(data.errorMessage)
+         }
+       });
+   
+   $("#updateBtn").click(function(){
+
+ var flight_no = $("#flight_no").val();
+      var source = $("#source").val();
+      var start = $("#start").val();
+      var destination = $("#destination").val();
+      var end = $("#end").val();
+      var price = $("#price").val();
+      var connect = $("#connect").val();
+
+
+
+var arr = { flight_no: flight_no,
+               source: source ,  start: start ,  destination: destination ,  end: end , price: price , connect: connect 
+                };
+$.ajax({
+    url: 'http://localhost:8089/example/users/update',
+    type: 'POST',
+    data: JSON.stringify(arr),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success: function(msg) {
+
+      if(msg.success===true){
+        //window.location.replace("file:///Users/nc8879/Desktop/shorya/login.html");
+        alert("Data Update Successfully");
+      }
+      else{
+        alert(msg.errorMessage);
+      }
+      }
+});
+
+
+     });
+
+   $("#deactivateBtn").click(function(){
+     var name = $("#userName").val();
+
+       $.get("http://localhost:8089/example/users/delete?userName="+name, function(data, status){
+         if(data.success===true){
+          alert("Your profile has been Deactivated Successfully");
+            location.href="file:///Users/nc8879/Desktop/shorya/login.html";
+         }
+         else{
+          alert(data.errorMessage)
+         }
+       });
+     });
+
+
+
+
+
+    });
+ 
+
+</script>
+</body>
+</html>
